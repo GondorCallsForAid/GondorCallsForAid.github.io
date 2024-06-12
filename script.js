@@ -5,45 +5,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const hunterImageSrc = "images/Robin.png";
 
-    const numHunters = 6;
+    const catchSound = document.getElementById('catchSound');
+    catchSound.load(); 
+
+    const allBugsCaughtSound = document.getElementById('allBugsCaughtSound');
+    allBugsCaughtSound.load();
+
+
+    const numHunters = 4;
     const hunters = [];
     const bugs = [];
     const bugTargets = new Map(); // Map to track bugs being targeted by hunters
 
+    let huntersReleased = false; // Flag to indicate if hunters have been released
+
+    let allBugsCaught = false; // Flag to indicate if all bugs have been caught
+
+
     function createBug() {
-        const words = ['Slow Performance', 'Model Overfitting', 'Stupid Bugs', 'Data Leaks', 'Irrelevant Features', 'Concept Drift', 'Merge Conflict']; // Sample words
-        const word = words[Math.floor(Math.random() * words.length)]; // Select a random word
-    
-        const bug = document.createElement('div');
-        bug.classList.add('bug');
-    
-        // Create an img element for the bug image
-        const bugImage = new Image();
-        bugImage.src = 'images/bug_triangle.png'; // Set the src attribute to the URL of your triangle image
-        bugImage.classList.add('bug-image'); // Add the bug-image class
-        bug.appendChild(bugImage); // Append the bug image to the bug element
-    
-        // Create a span element for the bug text
-        const bugText = document.createElement('span');
-        bugText.textContent = word; // Set the content of the bug text
-        bug.appendChild(bugText); // Append the bug text to the bug element
-    
-        container.appendChild(bug);
-    
-        // Randomly position the bug
-        const randomX = Math.random() * window.innerWidth;
-        const randomY = Math.random() * window.innerHeight;
-    
-        bug.style.left = randomX + 'px';
-        bug.style.top = randomY + 'px';
-    
-        bugs.push(bug);
-    
-        moveBug(bug);
+        if (!huntersReleased) {
+            const words = ['Slow Performance', 'Model Overfitting', 'Stupid Bugs', 'Data Leaks', 'Irrelevant Features', 'Concept Drift', 'Merge Conflict']; // Sample words
+            const word = words[Math.floor(Math.random() * words.length)]; // Select a random word
+        
+            const bug = document.createElement('div');
+            bug.classList.add('bug');
+        
+            // Create an img element for the bug image
+            const bugImage = new Image();
+            bugImage.src = 'images/bug_triangle.png'; // Set the src attribute to the URL of your triangle image
+            bugImage.classList.add('bug-image'); // Add the bug-image class
+            bug.appendChild(bugImage); // Append the bug image to the bug element
+        
+            // Create a span element for the bug text
+            const bugText = document.createElement('span');
+            bugText.textContent = word; // Set the content of the bug text
+            bug.appendChild(bugText); // Append the bug text to the bug element
+        
+            container.appendChild(bug);
+        
+            // Randomly position the bug
+            const randomX = Math.random() * window.innerWidth;
+            const randomY = Math.random() * window.innerHeight;
+        
+            bug.style.left = randomX + 'px';
+            bug.style.top = randomY + 'px';
+        
+            bugs.push(bug);
+        
+            moveBug(bug);
+        }
     }
 
     startHunters.addEventListener('click', () => {
         // Create hunters on button click
+        huntersReleased = true;
+
         for (let i = 0; i < numHunters; i++) {
             const hunter = createHunter();
             hunters.push(hunter);
@@ -74,6 +90,29 @@ document.addEventListener('DOMContentLoaded', () => {
     
         function frameHunter() {
             if (bugs.length === 0) {
+
+                if (allBugsCaught == false) {
+                    allBugsCaughtSound.play()
+                }
+                allBugsCaught = true;
+
+                // After all bugs are caught, move the hunter back to specific position
+                const restPositionX =  window.innerWidth/5;
+                const restPositionY =  window.innerHeight/4;
+                const hunterRect = hunter.getBoundingClientRect();
+                const hunterX = hunterRect.left + hunterRect.width / 2;
+                const hunterY = hunterRect.top + hunterRect.height / 2;
+                const dx = restPositionX - hunterX;
+                const dy = restPositionY - hunterY;
+
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    const angle = Math.atan2(dy, dx);
+                    const newX = hunterX + Math.cos(angle) * speed;
+                    const newY = hunterY + Math.sin(angle) * speed;
+                    hunter.style.left = newX - hunterRect.width / 2 + 'px';
+                    hunter.style.top = newY - hunterRect.height / 2 + 'px';
+                }
+
                 requestAnimationFrame(frameHunter);
                 return;
             }
@@ -123,13 +162,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Check if the hunter caught the bug
                 const distanceToBug = Math.sqrt((newX - bugX) ** 2 + (newY - bugY) ** 2);
                 if (distanceToBug < 15) {
+
+                // Create a new instance of the catch sound
+                const newCatchSound = new Audio(catchSound.src);
+                newCatchSound.load(); // Load the audio file
+                newCatchSound.play(); // Play the catch sound
+
+                // Adjust volume if needed
+                // newCatchSound.volume = 0.5; // Example: Set volume to 50%
+
+                // Optional: Dispose of the audio element after playing to prevent memory leaks
+                newCatchSound.addEventListener('ended', function() {
+                    newCatchSound.remove();
+                });
+
                     container.removeChild(targetBug);
                     const bugIndex = bugs.indexOf(targetBug);
                     if (bugIndex !== -1) {
                         bugs.splice(bugIndex, 1);
                         bugTargets.delete(targetBug);
                         targetBug = null; // Reset target bug after catching
+                        
+                        
                     }
+                    
                 }
             }
     
@@ -192,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         frameBug();
     }
 
+
     let mouseX = 0;
     let mouseY = 0;
 
@@ -200,5 +257,5 @@ document.addEventListener('DOMContentLoaded', () => {
         mouseY = event.pageY;
     });
 
-    setInterval(createBug, 200); // Creates a bug every second
+    setInterval(createBug, 400); // Creates a bug every second
 });

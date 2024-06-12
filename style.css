@@ -4,6 +4,7 @@
 	padding: 0; 
 	box-sizing: border-box; 
     font-family: "Roboto Slab", serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Adding shadow to all text */
 } 
 
 /* Setting up the bg-color, text-color 
@@ -22,6 +23,32 @@ body {
     margin-top: 4rem;
     margin-bottom: 1rem;
 }
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+  .section {
+    margin-bottom: 30px;
+  }
+
+  .section h2 {
+    padding-bottom: 5px;
+  }
+
+  .section ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .section li {
+    margin-bottom: 20px;
+  }
 
 .bug {
     /* width: 10px;
@@ -44,5 +71,83 @@ body {
     border-radius: 50%;
     position: absolute;
 }
+
+.rainbowButton {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #ff0066, #ffcc00, #33cc33, #33cccc, #3366ff, #9933ff, #ff33cc);
+    background-size: 400%;
+
+    padding: 15px 25px;  
+    border:  transparent 6px solid;
+    border-radius: 10px;
+
+    background: linear-gradient(45deg, #ff0066, #ffcc00, #33cc33, #33cccc, #3366ff, #9933ff, #ff33cc) 
+    padding-box, linear-gradient(45deg, #ff0066, #ffcc00, #33cc33, #33cccc, #3366ff, #9933ff, #ff33cc) border-box;
+    background-size: 400%;
+
+    cursor: pointer;
+    position: fixed;
+    bottom: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    outline: none;
+    animation: rainbow 8s infinite linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rainbowButton::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: inherit;
+    z-index: 1;
+    filter: blur(20px);
+    opacity: 0.7;
+    transition: all 0.5s;
+}
+
+.rainbowButton:hover::before {
+    top: -60%;
+    left: -60%;
+}
+
+.rainbowButton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    z-index: 0;
+    transition: all 0.5s;
+}
+
+.rainbowButton:hover::after {
+    background-position: 200% 0;
+}
+
+.rainbowButton span {
+    position: relative;
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adjust the values as needed */
+}
+
+@keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+
 
 
