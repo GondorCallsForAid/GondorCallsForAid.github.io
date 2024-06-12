@@ -56,6 +56,7 @@ body {
     border-radius: 50%;
     background-color: red; */
     position: absolute;
+    color: red;
 }
 
 .bug-image {
