@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 // Check if the hunter caught the bug
                 const distanceToBug = Math.sqrt((newX - bugX) ** 2 + (newY - bugY) ** 2);
-                if (distanceToBug < 10) {
+                if (distanceToBug < 15) {
                     container.removeChild(targetBug);
                     const bugIndex = bugs.indexOf(targetBug);
                     if (bugIndex !== -1) {
