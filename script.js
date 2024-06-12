@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const allBugsCaughtSound = document.getElementById('allBugsCaughtSound');
     allBugsCaughtSound.load();
 
+    const hirebutton = document.querySelector('#startHunters');
+    const hirebuttonRect = hirebutton.getBoundingClientRect();
 
     const numHunters = 4;
     const hunters = [];
@@ -96,9 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 allBugsCaught = true;
 
-                // After all bugs are caught, move the hunter back to specific position
-                const restPositionX =  window.innerWidth/5;
-                const restPositionY =  window.innerHeight/4;
+                // After all bugs are caught, move the hunter next to Hire button
+                const restPositionX =  hirebuttonRect.left - 50
+                const restPositionY =  hirebuttonRect.top + 30
                 const hunterRect = hunter.getBoundingClientRect();
                 const hunterX = hunterRect.left + hunterRect.width / 2;
                 const hunterY = hunterRect.top + hunterRect.height / 2;
