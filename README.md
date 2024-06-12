@@ -1,2 +1,2 @@
-# About me and small game
-Code for website showing my background with a small fun game.
+# About me and small gimmick
+Code for website showing my background with a small gimmick.
