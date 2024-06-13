@@ -5,12 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const hunterImageSrc = "images/Robin.png";
 
-    const catchSound = document.getElementById('catchSound');
-    catchSound.load(); 
-
-    const allBugsCaughtSound = document.getElementById('allBugsCaughtSound');
-    allBugsCaughtSound.load();
-
     const hirebutton = document.querySelector('#startHunters');
     const hirebuttonRect = hirebutton.getBoundingClientRect();
 
@@ -21,12 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let huntersReleased = false; // Flag to indicate if hunters have been released
 
-    let allBugsCaught = false; // Flag to indicate if all bugs have been caught
-
-
     function createBug() {
         if (!huntersReleased) {
-            const words = ['Slow Performance', 'Model Overfitting', 'Stupid Bugs', 'Data Leaks', 'Irrelevant Features', 'Concept Drift', 'Merge Conflict']; // Sample words
+            const words = ['Slow Performance', 'Model Overfitting', 'Stupid Bugs', 'Data Leaks', 'Irrelevant Features', 'Concept Drift', 'Merge Conflict', 'Biased Models']; // Sample words
             const word = words[Math.floor(Math.random() * words.length)]; // Select a random word
         
             const bug = document.createElement('div');
@@ -60,12 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startHunters.addEventListener('click', () => {
         // Create hunters on button click
-        huntersReleased = true;
-
+        if (huntersReleased) return;
+        
         for (let i = 0; i < numHunters; i++) {
             const hunter = createHunter();
             hunters.push(hunter);
         }
+
+        huntersReleased = true;
     });
 
     function createHunter() {
@@ -92,11 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
         function frameHunter() {
             if (bugs.length === 0) {
-
-                if (allBugsCaught == false) {
-                    allBugsCaughtSound.play()
-                }
-                allBugsCaught = true;
 
                 // After all bugs are caught, move the hunter next to Hire button
                 const restPositionX =  hirebuttonRect.left - 50
@@ -164,33 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Check if the hunter caught the bug
                 const distanceToBug = Math.sqrt((newX - bugX) ** 2 + (newY - bugY) ** 2);
                 if (distanceToBug < 15) {
-
-                // Create a new instance of the catch sound
-                const newCatchSound = new Audio(catchSound.src);
-                newCatchSound.load(); // Load the audio file
-                newCatchSound.play(); // Play the catch sound
-
-                // Adjust volume if needed
-                // newCatchSound.volume = 0.5; // Example: Set volume to 50%
-
-                // Optional: Dispose of the audio element after playing to prevent memory leaks
-                newCatchSound.addEventListener('ended', function() {
-                    newCatchSound.remove();
-                });
-
                     container.removeChild(targetBug);
                     const bugIndex = bugs.indexOf(targetBug);
                     if (bugIndex !== -1) {
                         bugs.splice(bugIndex, 1);
                         bugTargets.delete(targetBug);
-                        targetBug = null; // Reset target bug after catching
-                        
-                        
-                    }
-                    
+                        targetBug = null; // Reset target bug after catching    
+                    }  
                 }
             }
-    
             // Continue hunting for bugs
             requestAnimationFrame(frameHunter);
         }

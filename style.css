@@ -4,13 +4,14 @@
 	padding: 0; 
 	box-sizing: border-box; 
     font-family: "Roboto Slab", serif;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Adding shadow to all text */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* Adding shadow to all text */
 } 
 
 /* Setting up the bg-color, text-color 
 and alignment to all body elements */
 body { 
-	background-color: rgb(202, 177, 255); 
+	/*background-color: rgb(202, 177, 255); */
+    background-color: rgb(148, 114, 222);
 	color: white; 
 	justify-content: center; 
 } 
@@ -19,9 +20,26 @@ body {
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    font-size: 5rem;
-    margin-top: 4rem;
+    font-size: 3.5rem;
+    margin-top: 3rem;
     margin-bottom: 1rem;
+}
+
+
+.icons {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.icons a {
+    color: #ffffff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.icons a:hover {
+    color: #00ffbf;
 }
 
 .container {
@@ -90,7 +108,7 @@ body {
 
     cursor: pointer;
     position: fixed;
-    bottom: 130px;
+    bottom: 120px;
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
@@ -147,6 +165,9 @@ body {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+
+
 
 
 
